@@ -18,7 +18,28 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return {};
-  return { title: post.title, description: post.excerpt };
+  const url = `/posts/${post.slug}`;
+  return {
+    title: post.title,
+    description: post.excerpt,
+    keywords: post.tags,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt,
+      url,
+      publishedTime: post.date,
+      modifiedTime: post.date,
+      tags: post.tags,
+      ...(post.image ? { images: [{ url: post.image, width: 1200, height: 630, alt: post.title }] } : {}),
+    },
+    twitter: {
+      card: post.image ? "summary_large_image" : "summary",
+      title: post.title,
+      description: post.excerpt,
+    },
+  };
 }
 
 function fmtDate(d: string) {
@@ -40,8 +61,28 @@ export default async function PostPage({
   const newer = idx > 0 ? sorted[idx - 1] : null;
   const older = idx < sorted.length - 1 ? sorted[idx + 1] : null;
 
+  // Structured data cho Google (schema.org BlogPosting)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    dateModified: post.date,
+    inLanguage: "vi",
+    keywords: post.tags.join(", "),
+    author: { "@type": "Person", name: site.author },
+    publisher: { "@type": "Person", name: site.author },
+    mainEntityOfPage: `${site.siteUrl}/posts/${post.slug}`,
+    ...(post.image ? { image: `${site.siteUrl}${post.image}` } : {}),
+  };
+
   return (
     <div className="container-wide page post-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="post-breadcrumb">
         <Link href="/">home</Link> <span>/</span> <Link href="/posts">posts</Link>{" "}
         <span>/</span>{" "}

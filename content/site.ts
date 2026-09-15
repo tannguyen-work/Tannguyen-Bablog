@@ -11,6 +11,9 @@ export const site = {
   author: "Tên của bạn",
   authorRole: "Business Analyst",
   email: "your-email@example.com",
+  // URL công khai của web — dùng cho SEO (sitemap, canonical, Open Graph).
+  // Sau này gắn tên miền riêng thì sửa lại thành tên miền đó.
+  siteUrl: "https://tannguyen-bablog.pages.dev",
 };
 
 // Menu điều hướng (5 phần theo yêu cầu)
