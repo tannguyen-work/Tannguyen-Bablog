@@ -1,26 +1,26 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Post } from "@/content/posts";
 import { ListRow } from "./PostCards";
 
 /**
  * Danh sách bài viết có Ô TÌM KIẾM + LỌC THEO TAG (client-side).
- * Nhận `initialTag` từ query string (ví dụ /posts?tag=data).
+ * Đọc `?tag=` từ URL bằng useSearchParams — tương thích static export.
  */
 export default function PostsBrowser({
   posts,
   tags,
-  initialTag,
 }: {
   posts: Post[];
   tags: string[];
-  initialTag?: string;
 }) {
+  const searchParams = useSearchParams();
+  const urlTag = searchParams.get("tag") ?? "";
+
   const [query, setQuery] = useState("");
-  const [tag, setTag] = useState<string>(
-    initialTag && tags.includes(initialTag) ? initialTag : ""
-  );
+  const [tag, setTag] = useState<string>(tags.includes(urlTag) ? urlTag : "");
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

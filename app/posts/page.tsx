@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { sortedPosts, allTags } from "@/content/posts";
 import PostsBrowser from "@/components/PostsBrowser";
 
@@ -7,12 +8,7 @@ export const metadata: Metadata = {
   description: "Danh sách toàn bộ bài viết về Business Analysis.",
 };
 
-export default async function PostsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ tag?: string }>;
-}) {
-  const { tag } = await searchParams;
+export default function PostsPage() {
   const posts = sortedPosts();
   const tags = allTags();
 
@@ -26,7 +22,10 @@ export default async function PostsPage({
         </p>
       </div>
 
-      <PostsBrowser posts={posts} tags={tags} initialTag={tag} />
+      {/* Suspense bắt buộc cho useSearchParams khi build static */}
+      <Suspense fallback={null}>
+        <PostsBrowser posts={posts} tags={tags} />
+      </Suspense>
     </div>
   );
 }
