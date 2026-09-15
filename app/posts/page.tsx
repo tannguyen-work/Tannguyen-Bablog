@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { sortedPosts, allTags } from "@/content/posts";
+import { getAllPosts, allTags } from "@/lib/posts";
 import PostsBrowser from "@/components/PostsBrowser";
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function PostsPage() {
-  const posts = sortedPosts();
+  const posts = getAllPosts();
   const tags = allTags();
 
   return (

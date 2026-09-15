@@ -37,7 +37,7 @@ npm start
 Mọi thứ nằm trong thư mục `content/`:
 
 - **`content/site.ts`** — tên blog, tagline, menu, mạng xã hội, các dòng code trang trí hero, 6 topics ở footer
-- **`content/posts.ts`** — danh sách bài viết. Thêm bài mới = copy 1 khối trong mảng `posts` và sửa. Nội dung viết theo block: `h2`, `h3`, `p` (hỗ trợ `**in đậm**`), `ul`, `code`, `quote`, `img` (ô chờ ảnh)
+- **`content/articles/*.md`** — BÀI VIẾT: mỗi bài là 1 file Markdown (viết như soạn văn bản). Tạo bài mới = copy `_mau-bai-viet.md` → đổi tên → gõ nội dung. Chi tiết xem **`HUONG_DAN_VIET_BAI.md`**
 - **`content/projects.ts`** — dự án của bạn
 - **`content/resources.ts`** — link tài nguyên (nhớ thay các `href: "#"`)
 
@@ -46,7 +46,7 @@ Mọi thứ nằm trong thư mục `content/`:
 1. Thả file ảnh vào `public/images/`
 2. Thêm prop `src` cho ô ảnh, ví dụ:
    - Ảnh chân dung trang About → mở `app/about/page.tsx`, sửa `<ImagePlaceholder label="..." />` thành `<ImagePlaceholder src="/images/avatar.jpg" label="..." />`
-   - Ảnh bìa bài viết/dự án → chỉ cần sửa `image: null` thành `image: "/images/ten-anh.jpg"` trong `content/posts.ts` / `content/projects.ts`
+   - Ảnh bìa bài viết → sửa dòng `image:` trong phần khai báo đầu file `.md`; ảnh dự án → sửa `image: null` thành `image: "/images/ten-anh.jpg"` trong `content/projects.ts`
    - Ảnh trong nội dung bài → xem `public/images/README.md`
 
 Các ô chờ ảnh hiện có: hero trang chủ, card featured, trong thân bài viết, card dự án, trang About. Ô gạch chéo 🖼 sẽ tự biến thành ảnh thật khi bạn cung cấp `src`.
@@ -94,7 +94,7 @@ Dashboard Cloudflare → project **tannguyen-bablog** → **Custom domains** →
 ## ✅ Việc còn lại cho bạn
 
 - [ ] Thay `site.author`, `site.email`, link mạng xã hội trong `content/site.ts`
-- [ ] Viết bài thật của bạn trong `content/posts.ts` (5 bài hiện tại là mẫu)
+- [ ] Viết bài thật của bạn trong `content/articles/` (5 bài .md hiện tại là mẫu — xem `HUONG_DAN_VIET_BAI.md`)
 - [ ] Thêm dự án + link tài nguyên thật
 - [ ] Chèn ảnh vào `public/images/`
 - [ ] Kết nối dịch vụ email cho newsletter (tùy chọn)

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { site, heroCodeLines } from "@/content/site";
-import { posts, sortedPosts } from "@/content/posts";
+import { getAllPosts } from "@/lib/posts";
 import Ticker from "@/components/Ticker";
 import LoopCard from "@/components/LoopCard";
 import NewsletterForm from "@/components/NewsletterForm";
@@ -8,8 +8,9 @@ import { FeaturedCard, ListRow } from "@/components/PostCards";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 
 export default function Home() {
-  const featured = posts.filter((p) => p.featured);
-  const latest = sortedPosts().slice(0, 5);
+  const all = getAllPosts();
+  const featured = all.filter((p) => p.featured);
+  const latest = all.slice(0, 5);
 
   return (
     <div className="hp">

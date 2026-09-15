@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { posts, getPost } from "@/content/posts";
-import Content from "@/components/Content";
+import { getAllPosts, getPost, slugifyVi } from "@/lib/posts";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import NewsletterForm from "@/components/NewsletterForm";
 import { site } from "@/content/site";
 
 export function generateStaticParams() {
-  return posts.map((p) => ({ slug: p.slug }));
+  return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -20,15 +19,6 @@ export async function generateMetadata({
   const post = getPost(slug);
   if (!post) return {};
   return { title: post.title, description: post.excerpt };
-}
-
-function slugify(s: string) {
-  return s
-    .toLowerCase()
-    .replace(/[đĐ]/g, "d")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
 }
 
 function fmtDate(d: string) {
@@ -45,18 +35,19 @@ export default async function PostPage({
   const post = getPost(slug);
   if (!post) notFound();
 
-  const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = getAllPosts(); // đã sắp xếp mới → cũ
   const idx = sorted.findIndex((p) => p.slug === slug);
   const newer = idx > 0 ? sorted[idx - 1] : null;
   const older = idx < sorted.length - 1 ? sorted[idx + 1] : null;
-
-  const toc = post.content.filter((b) => b.t === "h2");
 
   return (
     <div className="container-wide page post-page">
       <div className="post-breadcrumb">
         <Link href="/">home</Link> <span>/</span> <Link href="/posts">posts</Link>{" "}
-        <span>/</span> <span className="post-breadcrumb-current">#{String(post.number).padStart(3, "0")}</span>
+        <span>/</span>{" "}
+        <span className="post-breadcrumb-current">
+          #{String(post.number).padStart(3, "0")}
+        </span>
       </div>
 
       <header className="post-header">
@@ -87,28 +78,29 @@ export default async function PostPage({
       <div className="post-layout">
         <article className="post-main">
           <p className="post-excerpt">{post.excerpt}</p>
-          <Content blocks={post.content} />
+
+          {/* Nội dung markdown đã render sẵn thành HTML khi build */}
+          <div
+            className="article-body"
+            dangerouslySetInnerHTML={{ __html: post.html }}
+          />
 
           <div className="post-end">
             <span className="post-end-mark">■</span>
-            <span>
-              // Hết bài — {site.tagline}
-            </span>
+            <span>// Hết bài — {site.tagline}</span>
           </div>
         </article>
 
         <aside className="post-sidebar">
-          {toc.length > 0 && (
+          {post.toc.length > 0 && (
             <nav className="toc" aria-label="Mục lục">
               <div className="toc-title">// Trong bài này</div>
               <ul>
-                {toc.map((b, i) =>
-                  b.t === "h2" ? (
-                    <li key={i}>
-                      <a href={`#${slugify(b.text)}`}>{b.text}</a>
-                    </li>
-                  ) : null
-                )}
+                {post.toc.map((heading, i) => (
+                  <li key={i}>
+                    <a href={`#${slugifyVi(heading)}`}>{heading}</a>
+                  </li>
+                ))}
               </ul>
             </nav>
           )}

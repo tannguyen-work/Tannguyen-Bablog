@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Post } from "@/content/posts";
+import type { Post } from "@/lib/posts";
 import ImagePlaceholder from "./ImagePlaceholder";
 
 function fmtDate(d: string) {

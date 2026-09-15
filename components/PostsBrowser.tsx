@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import type { Post } from "@/content/posts";
+import type { Post } from "@/lib/posts";
 import { ListRow } from "./PostCards";
 
 /**
