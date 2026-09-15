@@ -62,11 +62,34 @@ Toàn bộ design system nằm ở **`app/globals.css`**:
 
 Form hiện là **demo** (hiện thông báo cảm ơn). Muốn hoạt động thật, đăng ký miễn phí [Buttondown](https://buttondown.email) hoặc [Mailchimp], rồi sửa hàm `handleSubmit` trong `components/NewsletterForm.tsx` để gọi API của họ.
 
-## ☁️ Đưa lên internet (miễn phí)
+## ☁️ Web đang chạy ở đâu?
 
-1. Đẩy code lên GitHub
-2. Vào [vercel.com](https://vercel.com) → Import repository → Deploy
-3. Gắn tên miền riêng (nếu có) trong settings của Vercel
+**🌐 https://tannguyen-bablog.pages.dev** — host trên Cloudflare Pages (free, cho phép dùng thương mại, CDN toàn cầu).
+
+- Code: https://github.com/tannguyen-work/Tannguyen-Bablog
+- Chế độ build: **static export** (`output: "export"` trong `next.config.mjs`) → toàn bộ web là file tĩnh trong thư mục `out/`
+
+### Cập nhật web sau khi sửa nội dung
+
+Cách 1 — một chạm: **nhấp đúp `deploy.bat`** (tự build + đẩy lên Cloudflare).
+
+Cách 2 — thủ công:
+
+```bash
+npm run build
+npx wrangler pages deploy out --project-name=tannguyen-bablog
+```
+
+(Đăng nhập lại Cloudflare khi hết hạn: `npx wrangler login`)
+
+### Gắn tên miền riêng (khi bạn mua domain)
+
+Dashboard Cloudflare → project **tannguyen-bablog** → **Custom domains** → Add. Nếu mua domain ngay trong Cloudflare (Domain Registration, giá gốc ~$10/năm cho .com) thì nó tự kết nối, không cần chỉnh DNS.
+
+### Deploy nền tảng khác (tùy chọn)
+
+- **Vercel:** import repo GitHub, để nguyên cấu hình (static export chạy tốt trên Vercel)
+- **GitHub Pages:** đẩy thư mục `out/` lên nhánh `gh-pages`, hoặc dùng workflow Actions
 
 ## ✅ Việc còn lại cho bạn
 
