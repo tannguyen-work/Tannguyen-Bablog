@@ -1,1 +1,77 @@
-# Tannguyen-Bablog
+# BA.devlog — Blog Business Analyst của bạn
+
+Website blog cá nhân phong cách terminal/hacker (lấy cảm hứng cấu trúc từ donniechu.com), xây bằng **Next.js 15 + TypeScript + CSS thuần**.
+
+Tagline: `TRY. FAIL. LEARN. GROW. REPEAT.`
+
+## 🚀 Chạy website
+
+```bash
+cd ba-devlog
+npm install        # chỉ cần chạy lần đầu (đã cài sẵn)
+npm run dev        # chế độ phát triển → http://localhost:3000
+```
+
+Khi muốn chạy bản production:
+
+```bash
+npm run build
+npm start
+```
+
+> Lưu ý trên Windows PowerShell: nếu bị chặn script, dùng `npm.cmd run dev`.
+
+## 📁 Cấu trúc 5 trang
+
+| Trang | Đường dẫn | Nội dung |
+|---|---|---|
+| Home | `/` | Hero terminal-style + card "BA LOOP", ticker chạy chữ, Intro, Featured carousel, Latest posts, Newsletter |
+| Posts | `/posts` | Toàn bộ bài viết, có **ô tìm kiếm + lọc theo tag** |
+| Bài viết | `/posts/[slug]` | Mục lục (TOC) tự sinh, ảnh bìa, bài cũ/mới hơn, newsletter sidebar |
+| Projects | `/projects` | Lưới card dự án kèm trạng thái (DONE / IN PROGRESS) |
+| Resource Hub | `/resources` | 4 nhóm: Sách, Công cụ, Template, Khóa học & Cộng đồng |
+| About | `/about` | Ảnh chân dung (chờ chèn), giới thiệu, kỹ năng, nguyên tắc |
+
+## ✍️ Sửa nội dung ở đâu? (không cần đụng code giao diện)
+
+Mọi thứ nằm trong thư mục `content/`:
+
+- **`content/site.ts`** — tên blog, tagline, menu, mạng xã hội, các dòng code trang trí hero, 6 topics ở footer
+- **`content/posts.ts`** — danh sách bài viết. Thêm bài mới = copy 1 khối trong mảng `posts` và sửa. Nội dung viết theo block: `h2`, `h3`, `p` (hỗ trợ `**in đậm**`), `ul`, `code`, `quote`, `img` (ô chờ ảnh)
+- **`content/projects.ts`** — dự án của bạn
+- **`content/resources.ts`** — link tài nguyên (nhớ thay các `href: "#"`)
+
+## 🖼️ Chèn ảnh của bạn
+
+1. Thả file ảnh vào `public/images/`
+2. Thêm prop `src` cho ô ảnh, ví dụ:
+   - Ảnh chân dung trang About → mở `app/about/page.tsx`, sửa `<ImagePlaceholder label="..." />` thành `<ImagePlaceholder src="/images/avatar.jpg" label="..." />`
+   - Ảnh bìa bài viết/dự án → chỉ cần sửa `image: null` thành `image: "/images/ten-anh.jpg"` trong `content/posts.ts` / `content/projects.ts`
+   - Ảnh trong nội dung bài → xem `public/images/README.md`
+
+Các ô chờ ảnh hiện có: hero trang chủ, card featured, trong thân bài viết, card dự án, trang About. Ô gạch chéo 🖼 sẽ tự biến thành ảnh thật khi bạn cung cấp `src`.
+
+## 🎨 Tùy biến giao diện
+
+Toàn bộ design system nằm ở **`app/globals.css`**:
+- Đổi màu: sửa các biến trong `:root` (đầu file) — `--bg`, `--accent`, `--green`...
+- Font: JetBrains Mono (code) + Inter (chữ thường), khai báo trong `app/layout.tsx`
+- Hiệu ứng: ticker marquee, card brutalist (viền đậm + đổ bóng cứng), hover states
+
+## 📬 Newsletter
+
+Form hiện là **demo** (hiện thông báo cảm ơn). Muốn hoạt động thật, đăng ký miễn phí [Buttondown](https://buttondown.email) hoặc [Mailchimp], rồi sửa hàm `handleSubmit` trong `components/NewsletterForm.tsx` để gọi API của họ.
+
+## ☁️ Đưa lên internet (miễn phí)
+
+1. Đẩy code lên GitHub
+2. Vào [vercel.com](https://vercel.com) → Import repository → Deploy
+3. Gắn tên miền riêng (nếu có) trong settings của Vercel
+
+## ✅ Việc còn lại cho bạn
+
+- [ ] Thay `site.author`, `site.email`, link mạng xã hội trong `content/site.ts`
+- [ ] Viết bài thật của bạn trong `content/posts.ts` (5 bài hiện tại là mẫu)
+- [ ] Thêm dự án + link tài nguyên thật
+- [ ] Chèn ảnh vào `public/images/`
+- [ ] Kết nối dịch vụ email cho newsletter (tùy chọn)
