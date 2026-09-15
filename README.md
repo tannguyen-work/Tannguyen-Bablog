@@ -71,9 +71,19 @@ Form hiện là **demo** (hiện thông báo cảm ơn). Muốn hoạt động t
 
 ### Cập nhật web sau khi sửa nội dung
 
-Cách 1 — một chạm: **nhấp đúp `deploy.bat`** (tự build + đẩy lên Cloudflare).
+**Cách 1 (khuyên dùng sau khi nối Cloudflare với GitHub):** chỉ cần đẩy code lên GitHub, web TỰ deploy:
 
-Cách 2 — thủ công:
+```bash
+git add .
+git commit -m "them bai viet moi"
+git push
+```
+
+→ Cloudflare Pages tự build & đăng trong ~1-2 phút. Theo dõi tiến trình tại dash.cloudflare.com → Workers & Pages → tannguyen-bablog → Deployments.
+
+**Viết bài từ máy tính khác / điện thoại (không cần cài gì):** vào repo trên github.com → mở file `.md` trong `content/articles/` → bấm ✏️ sửa → Commit. Hoặc bấm phím `.` trên trang repo để mở VS Code trong trình duyệt (github.dev).
+
+**Cách 2 — deploy thủ công từ máy này** (khi chưa nối Git): nhấp đúp `deploy.bat`, hoặc:
 
 ```bash
 npm run build
