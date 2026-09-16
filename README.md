@@ -71,7 +71,7 @@ Form hiện là **demo** (hiện thông báo cảm ơn). Muốn hoạt động t
 
 ### Cập nhật web sau khi sửa nội dung
 
-**Cách 1 (khuyên dùng sau khi nối Cloudflare với GitHub):** chỉ cần đẩy code lên GitHub, web TỰ deploy:
+**Cách chuẩn (đang hoạt động): GitHub Actions tự động deploy.** Chỉ cần code lên GitHub là web tự cập nhật:
 
 ```bash
 git add .
@@ -79,11 +79,13 @@ git commit -m "them bai viet moi"
 git push
 ```
 
-→ Cloudflare Pages tự build & đăng trong ~1-2 phút. Theo dõi tiến trình tại dash.cloudflare.com → Workers & Pages → tannguyen-bablog → Deployments.
+→ GitHub Actions tự build + đẩy lên Cloudflare Pages trong ~3 phút. Theo dõi tiến trình: repo GitHub → tab **Actions** (vòng tròn xanh = thành công).
 
-**Viết bài từ máy tính khác / điện thoại (không cần cài gì):** vào repo trên github.com → mở file `.md` trong `content/articles/` → bấm ✏️ sửa → Commit. Hoặc bấm phím `.` trên trang repo để mở VS Code trong trình duyệt (github.dev).
+Workflow nằm ở `.github/workflows/deploy.yml`, dùng secret `CLOUDFLARE_API_TOKEN` (cài trong repo Settings → Secrets and variables → Actions). Token hết hạn/mất? Tạo lại tại dash.cloudflare.com/profile/api-tokens (quyền Account | Cloudflare Pages | Edit) rồi cập nhật secret.
 
-**Cách 2 — deploy thủ công từ máy này** (khi chưa nối Git): nhấp đúp `deploy.bat`, hoặc:
+**Viết bài từ máy tính khác / điện thoại (không cần cài gì):** vào repo trên github.com → mở file `.md` trong `content/articles/` → bấm ✏️ sửa → Commit. Hoặc bấm phím `.` trên trang repo để mở VS Code trong trình duyệt (github.dev). Mọi commit lên `main` đều tự deploy.
+
+**Cách dự phòng — deploy thủ công từ máy này:** nhấp đúp `deploy.bat`, hoặc:
 
 ```bash
 npm run build
@@ -91,6 +93,8 @@ npx wrangler pages deploy out --project-name=tannguyen-bablog
 ```
 
 (Đăng nhập lại Cloudflare khi hết hạn: `npx wrangler login`)
+
+> ⚠️ Trên dashboard Cloudflare có thể còn một "application" Workers Builds cũ (nối Git trực tiếp) đang lỗi build token — **cứ kệ nó, đừng xóa project `tannguyen-bablog`** (xóa là mất web). Deploy thật sự giờ chạy qua GitHub Actions.
 
 ### Gắn tên miền riêng (khi bạn mua domain)
 
