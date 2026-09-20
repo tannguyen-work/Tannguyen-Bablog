@@ -48,13 +48,15 @@ export const tickerItems = [
 ];
 
 // 6 nhóm chủ đề hiển thị ở footer (giống mục topics của trang mẫu)
+// LƯU Ý: `slug` PHẢI trùng với một tag có thật trong frontmatter bài viết
+// (tags: [...]) — nếu không, bấm vào sẽ ra 0 kết quả.
 export const topics = [
-  { slug: "requirements", name: "Requirements", sub: "Elicitation & Documentation" },
+  { slug: "requirements", name: "Requirements", sub: "Elicitation & Hỏi đáp" },
+  { slug: "documentation", name: "Documentation", sub: "BRD, SRS & Templates" },
   { slug: "data", name: "Data", sub: "SQL & BI Tools" },
-  { slug: "agile", name: "Agile", sub: "Scrum & Kanban" },
+  { slug: "agile", name: "Agile", sub: "Scrum & User Story" },
   { slug: "career", name: "Career", sub: "Roadmap & Growth" },
-  { slug: "tools", name: "Tools", sub: "Templates & Software" },
-  { slug: "mindset", name: "Mindset", sub: "Lessons & Philosophy" },
+  { slug: "soft-skills", name: "Soft Skills", sub: "Stakeholder & Giao tiếp" },
 ];
 
 // Mạng xã hội — thay link "#" bằng profile thật của bạn

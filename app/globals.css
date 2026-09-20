@@ -987,7 +987,9 @@ a.tag:hover {
 .newsletter-ok {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--accent);
+  font-weight: 600;
+  /* Màu chữ thường cho dễ đọc ở light mode (cyan nhạt trên nền trắng rất khó đọc) */
+  color: var(--text);
 }
 
 .newsletter-ok small {
@@ -1641,6 +1643,33 @@ a.tag:hover {
   padding: 1px 6px;
   border-radius: 3px;
   color: var(--tag-text);
+}
+
+/* ---------- 404 ---------- */
+.nf-terminal {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 2.1;
+  max-width: 640px;
+}
+
+.nf-prompt {
+  color: var(--accent);
+  margin-right: 8px;
+}
+
+.nf-error {
+  color: var(--red);
+}
+
+.nf-terminal a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ---------- Resource Hub ---------- */

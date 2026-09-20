@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Post } from "@/lib/posts";
 import { ListRow } from "./PostCards";
@@ -21,6 +21,12 @@ export default function PostsBrowser({
 
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState<string>(tags.includes(urlTag) ? urlTag : "");
+
+  // Đồng bộ tag từ URL: khi khách đang ở /posts và bấm topic dưới footer
+  // (điều hướng client-side, component KHÔNG mount lại) thì bộ lọc vẫn cập nhật.
+  useEffect(() => {
+    setTag(tags.includes(urlTag) ? urlTag : "");
+  }, [urlTag, tags]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

@@ -55,7 +55,7 @@ Các ô chờ ảnh hiện có: hero trang chủ, card featured, trong thân bà
 
 Toàn bộ design system nằm ở **`app/globals.css`**:
 - **Dark / Light mode**: nút ☾/☀ ở góc phải header (file `components/ThemeToggle.tsx`). Lựa chọn được lưu trong `localStorage` của khách; chưa bấm lần nào thì tự theo cài đặt hệ điều hành. Bảng màu tối nằm ở `:root`, bảng màu sáng ở `:root[data-theme="light"]` — sửa màu 2 khối này là đổi được cả 2 chế độ
-- Đổi màu: sửa các biến trong `:root` (đầu file) — `--bg`, `--accent`, `--green`...
+- Đổi màu: sửa các biến trong `:root` (đầu file) — `--bg`, `--accent`, `--badge-bg`... (màu light mode ở khối `:root[data-theme="light"]` ngay dưới)
 - Font: JetBrains Mono (code) + Inter (chữ thường), khai báo trong `app/layout.tsx`
 - Hiệu ứng: ticker marquee, card brutalist (viền đậm + đổ bóng cứng), hover states
 
