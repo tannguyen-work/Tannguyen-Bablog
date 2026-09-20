@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav, site } from "@/content/site";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const pathname = usePathname();
@@ -34,6 +35,7 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
+          <ThemeToggle />
           <a href="/#newsletter" className="header-mail" title="Nhận bài mới">
             ✉
           </a>

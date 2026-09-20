@@ -65,16 +65,3 @@ export const socials = [
   { name: "YouTube", href: "#" },
   { name: "TikTok", href: "#" },
 ];
-
-// Các dòng code trang trí phía sau hero (chủ đề BA)
-export const heroCodeLines = [
-  "> _ SELECT * FROM stakeholders WHERE influence = 'high'",
-  "> _ git commit -m \"update BRD v2.1\"",
-  "const story = new UserStory(as_a, i_want, so_that)",
-  "> _ excel --pivot sales_q3.xlsx",
-  "WHILE requirement.status = 'open' { analyze(); validate(); }",
-  "> _ powerbi refresh --dataset sales",
-  "> _ jira export --sprint 12 --format csv",
-  "draw BPMN('as-is') -> compare('to-be')",
-  "> _ npm run report:weekly",
-];

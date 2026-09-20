@@ -25,7 +25,7 @@ npm start
 
 | Trang | Đường dẫn | Nội dung |
 |---|---|---|
-| Home | `/` | Hero terminal-style + card "BA LOOP", ticker chạy chữ, Intro, Featured carousel, Latest posts, Newsletter |
+| Home | `/` | Hero terminal-style + card "BA LOOP", Intro, Featured, Recent posts, Newsletter, ticker chạy chữ ở đáy màn hình |
 | Posts | `/posts` | Toàn bộ bài viết, có **ô tìm kiếm + lọc theo tag** |
 | Bài viết | `/posts/[slug]` | Mục lục (TOC) tự sinh, ảnh bìa, bài cũ/mới hơn, newsletter sidebar |
 | Projects | `/projects` | Lưới card dự án kèm trạng thái (DONE / IN PROGRESS) |
@@ -54,6 +54,7 @@ Các ô chờ ảnh hiện có: hero trang chủ, card featured, trong thân bà
 ## 🎨 Tùy biến giao diện
 
 Toàn bộ design system nằm ở **`app/globals.css`**:
+- **Dark / Light mode**: nút ☾/☀ ở góc phải header (file `components/ThemeToggle.tsx`). Lựa chọn được lưu trong `localStorage` của khách; chưa bấm lần nào thì tự theo cài đặt hệ điều hành. Bảng màu tối nằm ở `:root`, bảng màu sáng ở `:root[data-theme="light"]` — sửa màu 2 khối này là đổi được cả 2 chế độ
 - Đổi màu: sửa các biến trong `:root` (đầu file) — `--bg`, `--accent`, `--green`...
 - Font: JetBrains Mono (code) + Inter (chữ thường), khai báo trong `app/layout.tsx`
 - Hiệu ứng: ticker marquee, card brutalist (viền đậm + đổ bóng cứng), hover states

@@ -20,7 +20,13 @@ export function FeaturedCard({ post }: { post: Post }) {
       </div>
       <div className="f-card-body">
         <div className="f-card-num">
-          <span className="f-card-badge">Featured</span>
+          <div className="f-card-tags">
+            {post.tags.map((t) => (
+              <span key={t} className="tag f-card-tag">
+                {t}
+              </span>
+            ))}
+          </div>
           <span className="f-card-hash">#{String(post.number).padStart(3, "0")}</span>
         </div>
         <h3 className="f-card-title">{post.title}</h3>

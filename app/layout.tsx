@@ -5,15 +5,18 @@ import Footer from "@/components/Footer";
 import { site } from "@/content/site";
 import "./globals.css";
 
+// Tên biến phải khớp với globals.css: --font-mono: var(--font-jetbrains), ...
+// (trước đây khai báo "--font-mono" bị :root ghi đè bằng var(--font-jetbrains)
+//  không tồn tại → font không bao giờ được áp dụng, rơi về font hệ thống)
 const mono = JetBrains_Mono({
   subsets: ["latin", "vietnamese"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
 const ui = Inter({
   subsets: ["latin", "vietnamese"],
-  variable: "--font-ui",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -63,9 +66,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Áp theme TRƯỚC khi trang vẽ (chống nháy màu):
+  // 1) dùng lựa chọn đã lưu trong localStorage("theme")
+  // 2) chưa lưu thì theo hệ điều hành (prefers-color-scheme)
+  // 3) mặc định cuối: dark
+  const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
+
   return (
-    <html lang="vi" className={`${mono.variable} ${ui.variable}`}>
+    <html
+      lang="vi"
+      data-theme="dark"
+      suppressHydrationWarning
+      className={`${mono.variable} ${ui.variable}`}
+    >
       <body>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <Header />
         <main>{children}</main>
         <Footer />

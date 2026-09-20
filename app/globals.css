@@ -8,20 +8,35 @@
 :root {
   --bg: #0e1117;
   --bg-card: #161b22;
-  --bg-hover: #1c2333;
+  --bg-hover: #17252a;
   --border: #21262d;
   --border-dim: #30363d;
   --text: #e6edf3;
   --text-muted: #8b949e;
   --text-dim: #6e7681;
-  --accent: #58a6ff;
-  --accent-dim: #1f6feb;
+  --accent: #00cce0;
+  --accent-dim: #008396;
   --green: #3fb950;
   --orange: #d29922;
   --red: #ff7a7a;
   --cyan: #00cce0;
-  --tag-bg: #1f2d3d;
-  --tag-text: #79c0ff;
+  --tag-bg: #00cce01f;
+  --tag-text: #79dceb;
+
+  /* Các màu từng hardcode — nay thành token để light mode override được */
+  --bg-code: #0b0e13;        /* nền terminal: code block, footer, loop-card head */
+  --bg-overlay: #0b0e13dd;   /* nền chip trạng thái đè trên ảnh (bán trong suốt) */
+  --bg-header: #0e1117f2;    /* nền header sticky (bán trong suốt) */
+  --code-text: #90e0ef;      /* chữ trong code block */
+  --slot-stripe: #122126;    /* vạch chéo của ô chờ ảnh */
+  --on-accent: #ffffff;      /* chữ trên nền accent */
+  --badge-bg: #00cce0;       /* nền badge "a blog about" (như donniechu.com) */
+  --badge-text: #0a0a0a;
+  --badge-border: #ffffff33;
+  /* Nút chính "Đọc blog →": dark mode đảo thành ô sáng chữ đen (như donniechu) */
+  --btn-primary-bg: #e6edf3;
+  --btn-primary-text: #0a0a0a;
+  --btn-primary-shadow: #ffffff26;
 
   --font-mono: var(--font-jetbrains), "JetBrains Mono", "Fira Code", ui-monospace, monospace;
   --font-ui: var(--font-inter), Inter, -apple-system, "Segoe UI", sans-serif;
@@ -31,11 +46,55 @@
   --transition: 0.15s ease;
 
   /* brutalist accents */
-  --b-border: 2px solid #0a0a0a;
-  --b-shadow: 4px 4px 0 #05070a;
-  --b-shadow-lg: 6px 6px 0 #05070a;
+  --b-border-color: #0a0a0a;
+  --shadow-hard: #05070a;
+  --b-border: 2px solid var(--b-border-color);
+  --b-shadow: 4px 4px 0 var(--shadow-hard);
+  --b-shadow-lg: 6px 6px 0 var(--shadow-hard);
 
   --header-h: 56px;
+
+  color-scheme: dark;
+}
+
+/* ---------- Light theme (bảng màu GitHub Light) ----------
+   Bật bằng cách đặt data-theme="light" trên <html>.
+   Script áp theme nằm trong app/layout.tsx, nút chuyển ở Header. */
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-card: #f6f8fa;
+  --bg-hover: #e8f2f4;
+  --border: #d0d7de;
+  --border-dim: #afb8c1;
+  --text: #1f2328;
+  --text-muted: #59636e;
+  --text-dim: #818b98;
+  --accent: #00cce0;
+  --accent-dim: #008396;
+  --green: #1a7f37;
+  --orange: #9a6700;
+  --red: #cf222e;
+  --cyan: #00cce0;
+  --tag-bg: #00cce01f;
+  --tag-text: #008396;
+
+  --bg-code: #f6f8fa;
+  --bg-overlay: #fffffff2;
+  --bg-header: #fffffff2;
+  --code-text: #008396;
+  --slot-stripe: #e9f2f4;
+  --badge-bg: #00cce0;
+  --badge-text: #0a0a0a;
+  --badge-border: #0a0a0a;
+  /* Nút chính "Đọc blog →": light mode = ĐEN chữ trắng (như donniechu) */
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-text: #f7f5f0;
+  --btn-primary-shadow: #0a0a0a;
+
+  --b-border-color: #6e7781;
+  --shadow-hard: #b8c0c8;
+
+  color-scheme: light;
 }
 
 /* ---------- Reset ---------- */
@@ -55,15 +114,35 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-ui);
-  font-size: 16px;
-  line-height: 1.65;
+  /* Toàn trang dùng MONO làm mặc định — đúng "chất" devlog của donniechu.com.
+     Inter chỉ còn dùng cho đoạn văn dài (xem các rule prose bên dưới). */
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: var(--accent);
   text-decoration: none;
+}
+
+/* ---------- Prose: đoạn văn DÀI dùng Inter cho dễ đọc ----------
+   Toàn trang là mono (chất terminal), nhưng các đoạn văn xuôi dài
+   dưới đây chuyển sang Inter — giống hệt cách donniechu.com giữ
+   font-ui cho .article-body, excerpt, mô tả. */
+.article-body p,
+.article-body li,
+.post-excerpt,
+.hp-desc,
+.hp-intro-text,
+.newsletter-desc,
+.f-card-excerpt,
+.project-desc,
+.res-card-desc,
+.about-body p,
+.about-list li {
+  font-family: var(--font-ui);
 }
 
 img {
@@ -73,7 +152,7 @@ img {
 
 ::selection {
   background: var(--accent-dim);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .container-wide {
@@ -98,17 +177,32 @@ img {
 
 .btn:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 #05070a;
+  box-shadow: 5px 5px 0 var(--shadow-hard);
 }
 
 .btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 #05070a;
+  box-shadow: 1px 1px 0 var(--shadow-hard);
 }
 
+/* Nút chính ("Đọc blog →", "Đăng ký →") — ĐEN/TRẮNG brutalist, hết màu xanh.
+   Light mode: nền đen chữ trắng. Dark mode: đảo ngược (nền sáng chữ đen)
+   để nút không chìm vào nền tối — đúng cách donniechu.com xử lý. */
 .btn-accent {
-  background: var(--accent-dim);
-  color: #fff;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+  box-shadow: 4px 4px 0 var(--btn-primary-shadow);
+}
+
+.btn-accent:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 6px 6px 0 var(--btn-primary-shadow);
+}
+
+.btn-accent:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--btn-primary-shadow);
 }
 
 .btn-ghost {
@@ -123,21 +217,22 @@ img {
   color: var(--accent);
 }
 
-/* ---------- Tag pill ---------- */
+/* ---------- Tag pill ----------
+   Nền XANH CYAN + chữ ĐEN trên TOÀN TRANG (đồng bộ badge, ticker, tag featured) */
 .tag {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 12px;
   padding: 2px 10px;
   border-radius: 999px;
-  background: var(--tag-bg);
-  color: var(--tag-text);
+  background: var(--accent);
+  color: var(--badge-text);
   border: 1px solid transparent;
   transition: border-color var(--transition);
 }
 
 a.tag:hover {
-  border-color: var(--accent);
+  border-color: var(--badge-text);
 }
 
 /* ---------- Image placeholder slot ---------- */
@@ -150,8 +245,8 @@ a.tag:hover {
     45deg,
     var(--bg-card),
     var(--bg-card) 12px,
-    #131820 12px,
-    #131820 24px
+    var(--slot-stripe) 12px,
+    var(--slot-stripe) 24px
   );
   overflow: hidden;
 }
@@ -204,7 +299,7 @@ a.tag:hover {
   top: 0;
   z-index: 100;
   height: var(--header-h);
-  background: #0e1117f2;
+  background: var(--bg-header);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
 }
@@ -230,7 +325,7 @@ a.tag:hover {
 }
 
 .logo-slashes {
-  color: var(--green);
+  color: var(--accent);
 }
 
 .nav {
@@ -259,7 +354,7 @@ a.tag:hover {
 
 .nav-link.active::before {
   content: "> ";
-  color: var(--green);
+  color: var(--accent);
 }
 
 .header-mail {
@@ -274,6 +369,44 @@ a.tag:hover {
   border-color: var(--accent);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- Nút chuyển dark/light mode ---------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  background: transparent;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-toggle-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* Icon hiển thị theo theme hiện tại — thuần CSS, không lệch hydration */
+.theme-toggle .icon-sun { display: none; }
+
+:root[data-theme="light"] .theme-toggle .icon-sun { display: inline; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
 /* ============================================================
    HERO
    ============================================================ */
@@ -281,57 +414,63 @@ a.tag:hover {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
-  padding: 72px 0 56px;
-}
-
-.hp-hero-code-bg {
-  position: absolute;
-  inset: 0;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 2.1;
-  color: var(--text-dim);
-  opacity: 0.28;
-  padding: 12px 24px;
-  white-space: nowrap;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-}
-
-.hero-code-line {
-  width: max-content;
-}
-
-.hero-code-line:nth-child(odd) {
-  color: var(--accent-dim);
+  /* Hero chiếm TRỌN màn hình đầu tiên — khách phải lướt xuống mới thấy Intro,
+     badge "a blog about" nằm ở đáy màn hình làm điểm ngăn cách (như donniechu.com) */
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--header-h));
+  min-height: calc(100svh - var(--header-h));
+  padding: 0;
 }
 
 .hp-hero-inner {
   position: relative;
+  z-index: 1;
+  flex: 1;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 48px;
   align-items: center;
+  padding: 64px 0 40px;
 }
 
+/* Badge "a blog about" — HÌNH VUÔNG, nền cyan, chữ đen in hoa,
+   viền đậm kiểu brutalist (đúng phong cách donniechu.com) */
 .hp-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--green);
-  border: 1px solid var(--border-dim);
-  background: var(--bg-card);
-  padding: 4px 12px;
-  border-radius: 999px;
-  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--badge-text);
+  background: var(--badge-bg);
+  border: 2px solid var(--badge-border);
+  border-radius: 0;
+  padding: 5px 12px;
+  margin-bottom: 26px;
 }
 
-.hp-badge::before {
-  content: "● ";
-  font-size: 9px;
-  vertical-align: 2px;
+/* Chấm nhỏ nhấp nháy trong badge */
+.hp-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--badge-text);
+  animation: badge-pulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes badge-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 
 .hp-title {
@@ -348,13 +487,36 @@ a.tag:hover {
   color: var(--accent);
 }
 
+/* Ô chữ đảo màu cho ANALYST / LEARN (như hp-title-inv của donniechu.com):
+   light mode = nền ĐEN chữ TRẮNG, dark mode = nền sáng chữ đen cho khỏi chìm */
+.hp-title-inv {
+  display: inline-block;
+  background: #e6edf3;
+  color: #0a0a0a;
+  padding: 0 8px 4px;
+}
+
+:root[data-theme="light"] .hp-title-inv {
+  background: #0a0a0a;
+  color: #f7f5f0;
+}
+
 .hp-tagline {
   margin-top: 18px;
   font-family: var(--font-mono);
   font-size: clamp(15px, 2vw, 19px);
   font-weight: 600;
-  color: var(--green);
+  color: var(--text);
   letter-spacing: 1px;
+}
+
+.hp-tagline-slashes {
+  color: var(--accent);
+}
+
+/* Chữ REPEAT. — cùng màu xanh accent với dấu "&" của tiêu đề */
+.hp-tagline-accent {
+  color: var(--accent);
 }
 
 .hp-desc {
@@ -391,7 +553,7 @@ a.tag:hover {
   align-items: center;
   gap: 7px;
   padding: 10px 14px;
-  background: #0b0e13;
+  background: var(--bg-code);
   border-bottom: 1px solid var(--border);
 }
 
@@ -437,7 +599,7 @@ a.tag:hover {
   animation: blink 1.6s steps(1) infinite;
 }
 
-.loop-status-ok { color: var(--green); }
+.loop-status-ok { color: var(--accent); }
 
 @keyframes blink {
   50% { opacity: 0.25; }
@@ -464,13 +626,16 @@ a.tag:hover {
 }
 
 /* ============================================================
-   TICKER
+   TICKER — dải chữ chạy nằm ở ĐÁY màn hình đầu tiên (trong hero),
+   tô màu xanh accent cùng màu với dấu "&" của tiêu đề
    ============================================================ */
 .ticker {
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-card);
+  position: relative;
+  z-index: 1;
+  border-top: 2px solid var(--b-border-color);
+  background: var(--accent);
   overflow: hidden;
-  padding: 12px 0;
+  padding: 10px 0;
 }
 
 .ticker-track {
@@ -489,15 +654,17 @@ a.tag:hover {
 
 .ticker-item {
   font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: var(--text-muted);
-  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--badge-text);
+  padding: 0 10px;
 }
 
 .ticker-star {
-  color: var(--orange);
+  color: var(--badge-text);
+  opacity: 0.45;
 }
 
 @keyframes ticker-scroll {
@@ -512,32 +679,56 @@ a.tag:hover {
   padding: 48px 0 8px;
 }
 
+/* Thanh tiêu đề section — TÔ ĐEN như .hp-section-head của donniechu.com:
+   light mode = nền đen chữ trắng; dark mode = nền card chữ sáng */
 .hp-section-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 22px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+  padding: 11px 24px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+:root[data-theme="light"] .hp-section-head {
+  background: #0a0a0a;
+  color: #f7f5f0;
 }
 
 .section-title {
-  font-family: var(--font-mono);
-  font-size: 20px;
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--green);
-  letter-spacing: 0.5px;
+  /* Màu chữ KHÓA CỨNG theo thanh: dark = chữ sáng, light = chữ trắng trên nền đen.
+     Không dùng inherit để không quy trình nào phủ màu xanh lên được nữa */
+  color: var(--text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:root[data-theme="light"] .section-title {
+  color: #f7f5f0;
+}
+
+/* Dấu "//" đầu tiêu đề section — màu cyan accent, chữ còn lại vẫn trắng */
+.section-title-slashes {
+  color: var(--accent);
 }
 
 .section-more {
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--accent);
 }
 
 .section-more:hover {
-  text-decoration: underline;
+  color: inherit;
 }
 
 .hp-intro-text {
@@ -604,15 +795,11 @@ a.tag:hover {
   align-items: center;
 }
 
-.f-card-badge {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--bg);
-  background: var(--orange);
-  padding: 2px 8px;
-  border-radius: 3px;
+/* Hàng tag trong card Featured — màu pill kế thừa từ .tag (nền cyan chữ đen) */
+.f-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .f-card-hash {
@@ -800,7 +987,7 @@ a.tag:hover {
 .newsletter-ok {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--green);
+  color: var(--accent);
 }
 
 .newsletter-ok small {
@@ -812,7 +999,7 @@ a.tag:hover {
    ============================================================ */
 .site-footer {
   border-top: 1px solid var(--border);
-  background: #0b0e13;
+  background: var(--bg-code);
   padding: 48px 0 0;
   margin-top: 24px;
 }
@@ -841,7 +1028,7 @@ a.tag:hover {
   margin-top: 14px;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--green);
+  color: var(--accent);
   letter-spacing: 1px;
 }
 
@@ -941,7 +1128,7 @@ a.tag:hover {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--green);
+  color: var(--accent);
   border: 1px solid var(--border-dim);
   background: var(--bg-card);
   padding: 3px 10px;
@@ -1031,9 +1218,9 @@ a.tag:hover {
 }
 
 .filter-tag.active {
-  background: var(--accent-dim);
-  border-color: var(--accent-dim);
-  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--badge-text);
 }
 
 .posts-count {
@@ -1068,7 +1255,7 @@ a.tag:hover {
 }
 
 .post-breadcrumb-current {
-  color: var(--green);
+  color: var(--accent);
 }
 
 .post-header {
@@ -1149,7 +1336,7 @@ a.tag:hover {
   font-family: var(--font-mono);
   font-size: 12.5px;
   font-weight: 700;
-  color: var(--green);
+  color: var(--accent);
   margin-bottom: 10px;
 }
 
@@ -1200,7 +1387,7 @@ a.tag:hover {
 }
 
 .h2-hash {
-  color: var(--green);
+  color: var(--accent);
   opacity: 0.7;
 }
 
@@ -1241,7 +1428,7 @@ a.tag:hover {
   content: ">";
   position: absolute;
   left: 2px;
-  color: var(--green);
+  color: var(--accent);
   font-family: var(--font-mono);
   font-size: 13px;
 }
@@ -1251,7 +1438,7 @@ a.tag:hover {
 }
 
 .code-block {
-  background: #0b0e13;
+  background: var(--bg-code);
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent-dim);
   border-radius: var(--radius);
@@ -1261,7 +1448,7 @@ a.tag:hover {
   font-family: var(--font-mono);
   font-size: 13.5px;
   line-height: 1.7;
-  color: #a5d6ff;
+  color: var(--code-text);
 }
 
 .pull-quote {
@@ -1303,7 +1490,7 @@ a.tag:hover {
 }
 
 .post-end-mark {
-  color: var(--green);
+  color: var(--accent);
 }
 
 .post-nav {
@@ -1390,11 +1577,11 @@ a.tag:hover {
   letter-spacing: 1px;
   padding: 3px 9px;
   border-radius: 3px;
-  background: #0b0e13dd;
+  background: var(--bg-overlay);
   border: 1px solid var(--border-dim);
 }
 
-.status-done { color: var(--green); }
+.status-done { color: var(--accent); }
 .status-wip { color: var(--orange); }
 .status-planned { color: var(--text-dim); }
 
@@ -1466,9 +1653,11 @@ a.tag:hover {
 }
 
 .res-count {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
 }
 
 .res-grid {
@@ -1513,8 +1702,9 @@ a.tag:hover {
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--green);
-  border: 1px solid var(--border-dim);
+  color: var(--badge-text);
+  background: var(--accent);
+  border: 1px solid var(--accent);
   padding: 2px 8px;
   border-radius: 3px;
   white-space: nowrap;
@@ -1639,12 +1829,20 @@ a.tag:hover {
     white-space: nowrap;
   }
 
-  .header-actions {
+  .header-mail {
     display: none;
   }
 
-  .hp-hero {
-    padding: 48px 0 40px;
+  .theme-toggle {
+    padding: 6px 8px;
+  }
+
+  .hp-hero-inner {
+    padding: 40px 0 28px;
+  }
+
+  .hp-section-head {
+    padding: 10px 16px;
   }
 
   .footer-grid {
@@ -1669,7 +1867,7 @@ a.tag:hover {
    NỘI DUNG MARKDOWN (render từ content/articles/*.md)
    ============================================================ */
 .article-body pre {
-  background: #0b0e13;
+  background: var(--bg-code);
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent-dim);
   border-radius: var(--radius);
@@ -1679,7 +1877,7 @@ a.tag:hover {
   font-family: var(--font-mono);
   font-size: 13.5px;
   line-height: 1.7;
-  color: #a5d6ff;
+  color: var(--code-text);
 }
 
 .article-body pre code {
@@ -1719,7 +1917,7 @@ a.tag:hover {
 
 .article-body h2::before {
   content: "## ";
-  color: var(--green);
+  color: var(--accent);
   opacity: 0.7;
 }
 
